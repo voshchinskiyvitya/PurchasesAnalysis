@@ -1,2 +1,6 @@
 *.mdf
 *.ldf
+PurchasesAnalysis/.vs/PurchasesAnalysis/v14/.suo
+bin/
+obj/
+*.user

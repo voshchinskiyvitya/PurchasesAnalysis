@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PurchasesAnalysis", "Purcha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBConnector", "DBConnector\DBConnector.csproj", "{24CF74F6-BE80-48B3-B72F-3A1F22098F14}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppControls", "AppControls\AppControls.csproj", "{C72818F1-E21E-49C0-8234-4CEAE2709D97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{24CF74F6-BE80-48B3-B72F-3A1F22098F14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24CF74F6-BE80-48B3-B72F-3A1F22098F14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24CF74F6-BE80-48B3-B72F-3A1F22098F14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C72818F1-E21E-49C0-8234-4CEAE2709D97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C72818F1-E21E-49C0-8234-4CEAE2709D97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C72818F1-E21E-49C0-8234-4CEAE2709D97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C72818F1-E21E-49C0-8234-4CEAE2709D97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

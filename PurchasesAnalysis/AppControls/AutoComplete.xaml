@@ -1,0 +1,10 @@
+﻿<UserControl x:Class="AppControls.AutoComplete"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008">
+    <Grid>
+        <TextBox x:Name="TextBox" HorizontalAlignment="Left" Height="30" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" TextChanged="TextBox_TextChanged"/>
+        <ListBox x:Name="ListBox" HorizontalAlignment="Left" Height="90" Margin="0,30,0,0" VerticalAlignment="Top" Width="200" SelectionChanged="ListBox_SelectionChanged"/>
+    </Grid>
+</UserControl>

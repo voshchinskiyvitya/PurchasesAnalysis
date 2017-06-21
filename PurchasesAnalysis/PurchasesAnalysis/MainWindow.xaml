@@ -4,10 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PurchasesAnalysis"
-        mc:Ignorable="d"
+        xmlns:appControls="clr-namespace:AppControls;assembly=AppControls"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <DataGrid x:Name="Table">
+        <DataGrid x:Name="Table" Margin="10,10,10,109">
         </DataGrid>
+        <appControls:AddWindow x:Name="AddWindow" Visibility="Hidden" Margin="107,10,106,11"></appControls:AddWindow>
+        <Button x:Name="Button" Content="Add" HorizontalAlignment="Left" Margin="32,253,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
     </Grid>
 </Window>

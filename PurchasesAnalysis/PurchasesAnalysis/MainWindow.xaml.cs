@@ -51,9 +51,14 @@ namespace PurchasesAnalysis
 
         private void OnProductRequest(object sender, AutoCompleteTextChangedArgs e)
         {
-            var table = new RequestExecuter(new DbConnectionFactory()).ExecuteSelect("select * from [dbo].[product] where name like '" + e.Text + "%'");
-            var products = table.Rows.OfType<DataRow>().Select(r => (string) r.ItemArray[1]).ToArray();
-            ((AutoComplete) sender).SetListItems(products);
+            if (!string.IsNullOrEmpty(e.Text))
+            {
+                var table =
+                    new RequestExecuter(new DbConnectionFactory()).ExecuteSelect(
+                        "select * from [dbo].[product] where name like '" + e.Text + "%'");
+                var products = table.Rows.OfType<DataRow>().Select(r => (string) r.ItemArray[1]).ToArray();
+                ((AutoComplete) sender).SetListItems(products);
+            }
         }
     }
 }

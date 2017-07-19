@@ -105,6 +105,10 @@
       <Project>{24cf74f6-be80-48b3-b72f-3a1f22098f14}</Project>
       <Name>DBConnector</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PurchasesAnalysis.Core\PurchasesAnalysis.Core.csproj">
+      <Project>{dafe8294-fcd9-4e86-9524-aa0851174dfd}</Project>
+      <Name>PurchasesAnalysis.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,15 +7,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Background="AntiqueWhite">
-        <local:AutoComplete x:Name="ProductAutocomplete" Panel.ZIndex="10" Width="200" Height="100" Margin="85,10,10,190"></local:AutoComplete>
+        <local:AutoComplete x:Name="ProductAutocomplete" Panel.ZIndex="10" Width="200" Height="100" Margin="89,10,11,190"></local:AutoComplete>
         <Label Content="Product" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="57"/>
-        <Label x:Name="label" Content="Date" HorizontalAlignment="Left" Margin="10,65,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label1" Content="Quantity" HorizontalAlignment="Left" Margin="10,129,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label2" Content="Price" HorizontalAlignment="Left" Margin="10,193,0,0" VerticalAlignment="Top"/>
-        <DatePicker HorizontalAlignment="Left" Margin="89,67,0,0" VerticalAlignment="Top" Width="201"/>
-        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="23" Margin="89,129,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="201"/>
-        <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="23" Margin="89,193,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="201"/>
+        <Label Content="Date" HorizontalAlignment="Left" Margin="11,55,0,0" VerticalAlignment="Top"/>
+        <Label Content="Quantity" HorizontalAlignment="Left" Margin="10,148,0,0" VerticalAlignment="Top"/>
+        <Label Content="Price" HorizontalAlignment="Left" Margin="10,193,0,0" VerticalAlignment="Top"/>
+        <DatePicker x:Name="Date" HorizontalAlignment="Left" Margin="89,57,0,0" VerticalAlignment="Top" Width="201"/>
+        <TextBox x:Name="Quantity" HorizontalAlignment="Left" Height="23" Margin="89,151,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="201"/>
+        <TextBox x:Name="Price" HorizontalAlignment="Left" Height="23" Margin="89,193,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="201"/>
         <Button x:Name="AddButton" Content="Add" HorizontalAlignment="Left" Margin="10,261,0,0" VerticalAlignment="Top" Width="137" Click="AddButton_Click"/>
         <Button x:Name="CloseButton" Content="Cancel" HorizontalAlignment="Left" Margin="152,261,0,0" VerticalAlignment="Top" Width="138" Click="CloseButton_Click"/>
+        <Label  Content="Type" HorizontalAlignment="Left" Margin="11,104,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="Type" HorizontalAlignment="Left" Height="23" Margin="89,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="201"/>
     </Grid>
 </UserControl>

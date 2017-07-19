@@ -15,6 +15,11 @@ namespace AppControls
         private volatile bool _ignoreChange;
 
         /// <summary>
+        /// Returns text from autocomplete textbox.
+        /// </summary>
+        public string Text => TextBox.Text;
+
+        /// <summary>
         /// Will be invoked when user enters text.
         /// </summary>
         public event EventHandler<AutoCompleteTextChangedArgs> OnTextChanged;

@@ -17,6 +17,8 @@ using AppControls;
 using AppControls.EventHandlerArgs;
 using DBConnector.ConnectionFactory;
 using DBConnector.RequestExecuter;
+using PurchasesAnalysis.Core.Models;
+using PurchasesAnalysis.Core.Repositories;
 
 namespace PurchasesAnalysis
 {
@@ -40,6 +42,7 @@ namespace PurchasesAnalysis
             Table.ItemsSource = Test;
 
             AddWindow.OnProductRequest += OnProductRequest;
+            AddWindow.OnAddButtonClick += OnAddButtonClick;
 
             //Test code!!!!!!
         }
@@ -53,12 +56,23 @@ namespace PurchasesAnalysis
         {
             if (!string.IsNullOrEmpty(e.Text))
             {
+                //Test code!!!!!!
                 var table =
                     new RequestExecuter(new DbConnectionFactory()).ExecuteSelect(
                         "select * from [dbo].[product] where name like '" + e.Text + "%'");
                 var products = table.Rows.OfType<DataRow>().Select(r => (string) r.ItemArray[1]).ToArray();
                 ((AutoComplete) sender).SetListItems(products);
+                //Test code!!!!!!
             }
+        }
+
+        private void OnAddButtonClick(object sender, object e)
+        {
+            //Test code!!!!!!
+            var repo = new PurchasesRepository(new RequestExecuter(new DbConnectionFactory()));
+
+            repo.Save((PurchaseItem) e);
+            //Test code!!!!!!
         }
     }
 }

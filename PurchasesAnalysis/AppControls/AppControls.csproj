@@ -92,6 +92,12 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PurchasesAnalysis.Core\PurchasesAnalysis.Core.csproj">
+      <Project>{dafe8294-fcd9-4e86-9524-aa0851174dfd}</Project>
+      <Name>PurchasesAnalysis.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

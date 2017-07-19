@@ -57,6 +57,7 @@
     <Compile Include="ConnectionFactory\DbConnectionFactory.cs" />
     <Compile Include="ConnectionFactory\IDbConnectionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IPurchasesRepository.cs" />
     <Compile Include="RequestExecuter\IRequestExecuter.cs" />
     <Compile Include="RequestExecuter\RequestExecuter.cs" />
   </ItemGroup>

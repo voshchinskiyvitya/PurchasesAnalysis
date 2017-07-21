@@ -32,12 +32,16 @@ BEGIN
 			[DayOfMonth] int NOT NULL,
 			[DayOfWeek] int NOT NULL,
 			CONSTRAINT Dates_PK PRIMARY KEY ([ID]),
-			CONSTRAINT DatesDate_UniqueConstraint UNIQUE([Date]),
-			INDEX DatesYear_NCIndex NONCLUSTERED([Year]),
-			INDEX DatesMonth_NCIndex NONCLUSTERED([Month]),
-			INDEX DatesDayOfMonth_NCIndex NONCLUSTERED([DayOfMonth]),
-			INDEX DatesDayOfWeek_NCIndex NONCLUSTERED([DayOfWeek])
+			CONSTRAINT DatesDate_UniqueConstraint UNIQUE([Date])
 		);
+
+		CREATE NONCLUSTERED INDEX DatesYear_NCIndex ON [Dates]([Year]);
+
+		CREATE NONCLUSTERED INDEX DatesMonth_NCIndex ON [Dates]([Month]);
+
+		CREATE NONCLUSTERED INDEX DatesDayOfMonth_NCIndex ON [Dates]([DayOfMonth]);
+
+		CREATE NONCLUSTERED INDEX DatesDayOfWeek_NCIndex ON [Dates]([DayOfWeek]);
 		
 		-- Types table
 		CREATE TABLE [Type](

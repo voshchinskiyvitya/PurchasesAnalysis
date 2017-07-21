@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using AppControls.EventHandlerArgs;
+using Color = System.Windows.Media;
 
 namespace AppControls
 {
@@ -13,6 +15,7 @@ namespace AppControls
     public partial class AutoComplete : UserControl
     {
         private volatile bool _ignoreChange;
+        private volatile bool _isError;
 
         /// <summary>
         /// Returns text from autocomplete textbox.
@@ -56,10 +59,27 @@ namespace AppControls
             ListBox.Visibility = items.Any() ? System.Windows.Visibility.Visible : System.Windows.Visibility.Hidden;
         }
 
+        /// <summary>
+        /// Shows that entered value is invalid.
+        /// </summary>
+        /// <remarks>
+        /// Should be invoked when autocomplete value didn't pass validation.
+        /// </remarks>
+        public void ShowError()
+        {
+            _isError = true;
+            TextBox.Background = new SolidColorBrush(Color.Color.FromArgb(255, 255, 176, 176)); // Pink
+        }
+
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!_ignoreChange)
             {
+                if (_isError)
+                {
+                    TextBox.Background = new SolidColorBrush(Color.Color.FromRgb(255,255,255)); // White
+                    _isError = false;
+                }
                 OnTextChanged?.Invoke(this, new AutoCompleteTextChangedArgs(TextBox.Text));
             }
         }

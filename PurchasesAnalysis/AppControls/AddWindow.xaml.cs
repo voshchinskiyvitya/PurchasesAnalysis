@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows.Controls;
+using System.Windows.Media;
 using AppControls.EventHandlerArgs;
 using PurchasesAnalysis.Core.Models;
+using Color = System.Windows.Media;
 
 namespace AppControls
 {
@@ -10,6 +12,15 @@ namespace AppControls
     /// </summary>
     public partial class AddWindow : UserControl
     {
+        private readonly SolidColorBrush errorBrush = new SolidColorBrush(Color.Color.FromArgb(255, 255, 176, 176));
+        private readonly SolidColorBrush normalBrush = new SolidColorBrush(Color.Color.FromRgb(255, 255, 255));
+
+        // TODO: should be removed when custom inputs will be implemented.
+        private volatile bool _isDateError;
+        private volatile bool _isTypeError;
+        private volatile bool _isQuantityError;
+        private volatile bool _isPriceError;
+
         /// <summary>
         /// Will be invoked when user try to select product in autocomplete.
         /// </summary>
@@ -53,10 +64,10 @@ namespace AppControls
 
             var product = new Product
             {
-                Id = 1,
                 Name = ProductAutocomplete.Text,
-                Price = decimal.Parse(Price.Text), // TODO: use try parse
-                Quantity = int.Parse(Quantity.Text) // TODO: use try parse
+                // ValidateInputs method provides 100% guarantee that values will be correct.
+                Price = decimal.Parse(Price.Text), 
+                Quantity = int.Parse(Quantity.Text) 
             };
 
             var type = new PurchasesAnalysis.Core.Models.Type
@@ -87,8 +98,79 @@ namespace AppControls
 
         private bool ValidateInputs()
         {
-            // TODO: Apply validation logic.
+            if (string.IsNullOrEmpty(ProductAutocomplete.Text))
+            {
+                ProductAutocomplete.ShowError();
+                return false;
+            }
+
+            if (!Date.SelectedDate.HasValue)
+            {
+                Date.Background = errorBrush;
+                _isDateError = true;
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(Type.Text))
+            {
+                Type.Background = errorBrush;
+                _isTypeError = true;
+                return false;
+            }
+
+            int stubInt;
+            if (string.IsNullOrEmpty(Quantity.Text) || !int.TryParse(Quantity.Text, out stubInt))
+            {
+                Quantity.Background = errorBrush;
+                _isQuantityError = true;
+                return false;
+            }
+
+            decimal stubDec;
+            if (string.IsNullOrEmpty(Price.Text) || !decimal.TryParse(Price.Text, out stubDec))
+            {
+                Price.Background = errorBrush;
+                _isPriceError = true;
+                return false;
+            }
+
             return true;
+        }
+
+        private void Type_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_isTypeError)
+            {
+                Type.Background = normalBrush;
+                _isTypeError = false;
+            }
+        }
+
+        private void Quantity_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_isQuantityError)
+            {
+                Quantity.Background = normalBrush;
+                _isQuantityError = false;
+            }
+        }
+
+        private void Price_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_isPriceError)
+            {
+                Price.Background = normalBrush;
+                _isPriceError = false;
+            }
+        }
+
+        private void Date_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_isDateError)
+            {
+                Date.Background = normalBrush;
+                _isDateError = false;
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ CREATE PROCEDURE Create_Purchase
 	@date DATETIME, 
 	@name VARCHAR(100), 
 	@type VARCHAR(100), 
-	@price INT, 
+	@price DECIMAL(5, 2), 
 	@quantity INT 
 AS
 BEGIN

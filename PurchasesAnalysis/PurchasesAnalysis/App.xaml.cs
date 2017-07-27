@@ -1,5 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using Ninject;
+using PurchasesAnalysis.Core.Models.OLAP;
+using PurchasesAnalysis.Core.Models.OLAP.Dimentions;
 
 namespace PurchasesAnalysis
 {
@@ -15,6 +19,7 @@ namespace PurchasesAnalysis
             base.OnStartup(e);
             ConfigureContainer();
             ComposeObjects();
+            ConfigureDbStructure();
             Current.MainWindow.Show();
         }
 
@@ -26,6 +31,34 @@ namespace PurchasesAnalysis
         private void ComposeObjects()
         {
             Current.MainWindow = container.Get<MainWindow>();
+        }
+
+        private void ConfigureDbStructure()
+        {
+            OlapDb.RegisterDbStructure(new FactsTable("Purchases", new List<IFact>
+            {
+                new Fact<int>("Quantity"), 
+                new Fact<decimal>("Price") 
+            }),
+            new List<IDimention>
+            {
+                new Dimention("Dates", new List<ICriteria>
+                {
+                    new Criteria<DateTime>("Date"),
+                    new Criteria<int>("Year"),
+                    new Criteria<int>("Month"),
+                    new Criteria<int>("DayOfWeek"),
+                    new Criteria<int>("DayOfMonth")
+                }),
+                new Dimention("Type", new List<ICriteria>
+                {
+                    new Criteria<string>("Name")
+                }),
+                new Dimention("Product", new List<ICriteria>
+                {
+                    new Criteria<string>("Name")
+                })
+            });
         }
     }
 }

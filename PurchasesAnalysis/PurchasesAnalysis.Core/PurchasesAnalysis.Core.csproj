@@ -44,6 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\OLAP\Criteria.cs" />
+    <Compile Include="Models\OLAP\Dimention.cs" />
+    <Compile Include="Models\OLAP\FactsTable.cs" />
+    <Compile Include="Models\OLAP\IDimention.cs" />
+    <Compile Include="Models\OLAP\Fact.cs" />
+    <Compile Include="Models\OLAP\ICriteria.cs" />
+    <Compile Include="Models\OLAP\IFact.cs" />
+    <Compile Include="Models\OLAP\OlapDb.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\PurchaseItem.cs" />
     <Compile Include="Models\Type.cs" />

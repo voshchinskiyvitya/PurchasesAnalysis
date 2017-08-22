@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows;
 using AppControls;
@@ -14,22 +15,23 @@ namespace PurchasesAnalysis
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly IRequestExecuter _requestExecuter;
         private readonly IPurchasesRepository _purchasesRepository;
+        private readonly IRequestExecuter _requestExecuter;
 
         public Test[] Test { get; set; }
 
-        public MainWindow(IRequestExecuter requestExecuter, IPurchasesRepository purchasesRepository)
+        public MainWindow(IPurchasesRepository purchasesRepository, IRequestExecuter requestExecuter)
         {
-            _requestExecuter = requestExecuter;
             _purchasesRepository = purchasesRepository;
+            _requestExecuter = requestExecuter;
 
             InitializeComponent();
             //Test code!!!!!!
-            var table = _requestExecuter.ExecuteSelect("select * from [dbo].[product]");
+            var table = _requestExecuter.ExecuteSelect("select pu.price, t.name from purchases pu join type t on t.id = pu.type");
+
             Test = table.Rows.OfType<DataRow>().Select(r => new Test {
-                Name = (string) r.ItemArray[1],
-                Id = (int)r.ItemArray[0]
+                Type = (string)r.ItemArray[1],
+                Price = (decimal)r.ItemArray[0]
             }).ToArray();
 
             Table.ItemsSource = Test;

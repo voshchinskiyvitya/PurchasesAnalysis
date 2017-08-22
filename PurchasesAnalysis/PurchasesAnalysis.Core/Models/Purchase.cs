@@ -12,18 +12,17 @@ namespace PurchasesAnalysis.Core.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Product
+    public partial class Purchase
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Product()
-        {
-            this.Purchases = new HashSet<Purchase>();
-        }
-    
         public int ID { get; set; }
-        public string Name { get; set; }
+        public int Type { get; set; }
+        public int Product { get; set; }
+        public int Date { get; set; }
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Purchase> Purchases { get; set; }
+        public virtual Date Date1 { get; set; }
+        public virtual Product Product1 { get; set; }
+        public virtual Type Type1 { get; set; }
     }
 }

@@ -27,14 +27,9 @@ namespace PurchasesAnalysis
 
             InitializeComponent();
             //Test code!!!!!!
-            var table = _requestExecuter.ExecuteSelect("select pu.price, t.name from purchases pu join type t on t.id = pu.type");
+            var purchases = _purchasesRepository.GetAll();
 
-            Test = table.Rows.OfType<DataRow>().Select(r => new Test {
-                Type = (string)r.ItemArray[1],
-                Price = (decimal)r.ItemArray[0]
-            }).ToArray();
-
-            Table.ItemsSource = Test;
+            Table.ItemsSource = purchases;
 
             AddWindow.OnProductRequest += OnProductRequest;
             AddWindow.OnAddButtonClick += OnAddButtonClick;

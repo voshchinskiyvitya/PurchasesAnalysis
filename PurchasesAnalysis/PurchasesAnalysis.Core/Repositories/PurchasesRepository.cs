@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using DBConnector.RequestExecuter;
 using PurchasesAnalysis.Core.Models;
 
@@ -15,14 +16,63 @@ namespace PurchasesAnalysis.Core.Repositories
 
         public void Save(PurchaseItem purchase)
         {
-            _requestExecuter.ExecuteProcedure("Create_Purchase", new Dictionary<string, object>
+            using (var context = new PurchasesEntities())
             {
-                { "@date", purchase.Date },
-                { "@name", purchase.Product.Name },
-                { "@type", purchase.Type.Name },
-                { "@price", purchase.Product.Price }, // TODO: change db column type to decimal.
-                { "@quantity", purchase.Product.Quantity },
-            });
+                context.Create_Purchase(purchase.Date, purchase.Product.Name, purchase.Type.Name, purchase.Price, purchase.Quantity);
+            }
+        }
+
+        public PurchaseItem Get(int id)
+        {
+            using (var context = new PurchasesEntities())
+            {
+                var purchase = context.Purchases.FirstOrDefault(p => p.ID == id);
+
+                if (purchase == null)
+                    return null;
+
+                return new PurchaseItem
+                {
+                    Id = purchase.ID,
+                    Type = new TypeItem
+                    {
+                        Id = purchase.Type1.ID,
+                        Name = purchase.Type1.Name
+                    },
+                    Product = new ProductItem
+                    {
+                        Id = purchase.Product1.ID,
+                        Name = purchase.Product1.Name
+                    },
+                    Date = purchase.Date1.Date1
+                };
+            }
+        }
+
+        public IList<PurchaseItem> GetAll()
+        {
+            using (var context = new PurchasesEntities())
+            {
+                var purchases = context.Purchases;
+
+                return purchases?.Select(purchase => new PurchaseItem
+                {
+                    Id = purchase.ID,
+                    Type = new TypeItem
+                    {
+                        Id = purchase.Type1.ID,
+                        Name = purchase.Type1.Name
+                    },
+                    Product = new ProductItem
+                    {
+                        Id = purchase.Product1.ID,
+                        Name = purchase.Product1.Name
+                    },
+                    Date = purchase.Date1.Date1,
+                    Price = purchase.Price,
+                    Quantity = purchase.Quantity
+                }).ToList();
+            }
         }
     }
 }

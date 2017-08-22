@@ -62,15 +62,12 @@ namespace AppControls
             if (!ValidateInputs())
                 return;
 
-            var product = new Product
+            var product = new ProductItem
             {
                 Name = ProductAutocomplete.Text,
-                // ValidateInputs method provides 100% guarantee that values will be correct.
-                Price = decimal.Parse(Price.Text), 
-                Quantity = int.Parse(Quantity.Text) 
             };
 
-            var type = new PurchasesAnalysis.Core.Models.Type
+            var type = new TypeItem
             {
                 Name = Type.Text
             };
@@ -79,7 +76,10 @@ namespace AppControls
             {
                 Product = product,
                 Type = type,
-                Date = Date.SelectedDate.Value
+                Date = Date.SelectedDate.Value,
+                // ValidateInputs method provides 100% guarantee that values will be correct.
+                Price = decimal.Parse(Price.Text),
+                Quantity = int.Parse(Quantity.Text)
             };
 
             OnAddButtonClick?.Invoke(sender, purchase);

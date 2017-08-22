@@ -12,16 +12,20 @@ namespace PurchasesAnalysis.Core.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Product
+    public partial class Date
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Product()
+        public Date()
         {
             this.Purchases = new HashSet<Purchase>();
         }
     
         public int ID { get; set; }
-        public string Name { get; set; }
+        public System.DateTime Date1 { get; set; }
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public int DayOfMonth { get; set; }
+        public int DayOfWeek { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Purchase> Purchases { get; set; }

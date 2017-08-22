@@ -12,16 +12,26 @@ namespace PurchasesAnalysis.Core.Models
         /// <summary>
         /// Purchased item.
         /// </summary>
-        public Product Product { get; set; }
+        public ProductItem Product { get; set; }
 
         /// <summary>
         /// Type of purchased items.
         /// </summary>
-        public Type Type { get; set; }
+        public TypeItem Type { get; set; }
 
         /// <summary>
         /// Purchase date.
         /// </summary>
         public DateTime Date { get; set; }
+
+        /// <summary>
+        /// Purchase items price.
+        /// </summary>
+        public decimal Price { get; set; }
+
+        /// <summary>
+        /// Purchase items quantity.
+        /// </summary>
+        public int Quantity { get; set; }
     }
 }

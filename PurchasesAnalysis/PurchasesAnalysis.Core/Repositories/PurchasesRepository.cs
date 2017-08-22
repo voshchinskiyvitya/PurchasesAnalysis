@@ -1,22 +1,23 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DBConnector.RequestExecuter;
+using PurchasesAnalysis.Core.ContextProvider;
 using PurchasesAnalysis.Core.Models;
+using PurchasesAnalysis.Core.Services;
 
 namespace PurchasesAnalysis.Core.Repositories
 {
     public class PurchasesRepository: IPurchasesRepository
     {
-        private readonly IRequestExecuter _requestExecuter;
+        private readonly IDbContextProvider _contextProvider;
 
-        public PurchasesRepository(IRequestExecuter requestExecuter)
+        public PurchasesRepository(IDbContextProvider contextProvider)
         {
-            _requestExecuter = requestExecuter;
+            _contextProvider = contextProvider;
         }
 
         public void Save(PurchaseItem purchase)
         {
-            using (var context = new PurchasesEntities())
+            using (var context = _contextProvider.GetContext())
             {
                 context.Create_Purchase(purchase.Date, purchase.Product.Name, purchase.Type.Name, purchase.Price, purchase.Quantity);
             }
@@ -24,54 +25,21 @@ namespace PurchasesAnalysis.Core.Repositories
 
         public PurchaseItem Get(int id)
         {
-            using (var context = new PurchasesEntities())
+            using (var context = _contextProvider.GetContext())
             {
                 var purchase = context.Purchases.FirstOrDefault(p => p.ID == id);
 
-                if (purchase == null)
-                    return null;
-
-                return new PurchaseItem
-                {
-                    Id = purchase.ID,
-                    Type = new TypeItem
-                    {
-                        Id = purchase.Type1.ID,
-                        Name = purchase.Type1.Name
-                    },
-                    Product = new ProductItem
-                    {
-                        Id = purchase.Product1.ID,
-                        Name = purchase.Product1.Name
-                    },
-                    Date = purchase.Date1.Date1
-                };
+                return purchase?.ToDto();
             }
         }
 
         public IList<PurchaseItem> GetAll()
         {
-            using (var context = new PurchasesEntities())
+            using (var context = _contextProvider.GetContext())
             {
                 var purchases = context.Purchases;
 
-                return purchases?.Select(purchase => new PurchaseItem
-                {
-                    Id = purchase.ID,
-                    Type = new TypeItem
-                    {
-                        Id = purchase.Type1.ID,
-                        Name = purchase.Type1.Name
-                    },
-                    Product = new ProductItem
-                    {
-                        Id = purchase.Product1.ID,
-                        Name = purchase.Product1.Name
-                    },
-                    Date = purchase.Date1.Date1,
-                    Price = purchase.Price,
-                    Quantity = purchase.Quantity
-                }).ToList();
+                return purchases?.ToList().Select(p => p.ToDto()).ToList();
             }
         }
     }

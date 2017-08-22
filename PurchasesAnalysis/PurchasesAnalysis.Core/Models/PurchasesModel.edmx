@@ -81,7 +81,7 @@
           <Parameter Name="date" Type="datetime" Mode="In" />
           <Parameter Name="name" Type="varchar" Mode="In" />
           <Parameter Name="type" Type="varchar" Mode="In" />
-          <Parameter Name="price" Type="int" Mode="In" />
+          <Parameter Name="price" Type="decimal" Mode="In" />
           <Parameter Name="quantity" Type="int" Mode="In" />
         </Function>
         <EntityContainer Name="PurchasesModelStoreContainer">
@@ -206,7 +206,7 @@
             <Parameter Name="date" Mode="In" Type="DateTime" />
             <Parameter Name="name" Mode="In" Type="String" />
             <Parameter Name="type" Mode="In" Type="String" />
-            <Parameter Name="price" Mode="In" Type="Int32" />
+            <Parameter Name="price" Mode="In" Type="Decimal" />
             <Parameter Name="quantity" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>

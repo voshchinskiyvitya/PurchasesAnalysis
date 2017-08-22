@@ -55,6 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContextProvider\DbContextProvider.cs" />
+    <Compile Include="ContextProvider\IDbContextProvider.cs" />
     <Compile Include="Models\Date.cs">
       <DependentUpon>PurchasesModel.tt</DependentUpon>
     </Compile>
@@ -88,6 +90,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IPurchasesRepository.cs" />
     <Compile Include="Repositories\PurchasesRepository.cs" />
+    <Compile Include="Services\ModelConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DBConnector\DBConnector.csproj">

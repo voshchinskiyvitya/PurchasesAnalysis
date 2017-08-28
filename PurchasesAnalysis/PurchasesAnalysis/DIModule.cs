@@ -3,6 +3,7 @@ using DBConnector.RequestExecuter;
 using Ninject.Modules;
 using PurchasesAnalysis.Core.ContextProvider;
 using PurchasesAnalysis.Core.Repositories;
+using PurchasesAnalysis.Core.Services;
 
 namespace PurchasesAnalysis
 {
@@ -15,6 +16,7 @@ namespace PurchasesAnalysis
             Bind<IDbConnectionFactory>().To<DbConnectionFactory>().InSingletonScope();
             Bind<IPurchasesRepository>().To<PurchasesRepository>().InSingletonScope();
             Bind<IDbContextProvider>().To<DbContextProvider>().InSingletonScope();
+            Bind<IAnalysisService>().To<AnalysisService>().InSingletonScope();
         }
     }
 }

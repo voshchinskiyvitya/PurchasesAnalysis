@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Windows;
 using AppControls;
 using AppControls.EventHandlerArgs;
 using DBConnector.RequestExecuter;
 using PurchasesAnalysis.Core.Models;
 using PurchasesAnalysis.Core.Repositories;
+using PurchasesAnalysis.Core.Services;
 
 namespace PurchasesAnalysis
 {
@@ -17,19 +20,24 @@ namespace PurchasesAnalysis
     {
         private readonly IPurchasesRepository _purchasesRepository;
         private readonly IRequestExecuter _requestExecuter;
+        private readonly IAnalysisService _analysisService;
 
         public Test[] Test { get; set; }
 
-        public MainWindow(IPurchasesRepository purchasesRepository, IRequestExecuter requestExecuter)
+        public MainWindow(
+            IPurchasesRepository purchasesRepository, 
+            IRequestExecuter requestExecuter, 
+            IAnalysisService analysisService)
         {
             _purchasesRepository = purchasesRepository;
             _requestExecuter = requestExecuter;
+            _analysisService = analysisService;
 
             InitializeComponent();
             //Test code!!!!!!
-            var purchases = _purchasesRepository.GetAll();
+            var purchases = _purchasesRepository.GetAll();//_analysisService.Analyse(new List<Expression<Func<Purchase, bool>>> { p => p.Type1.Name == "Продукти" });
 
-            Table.ItemsSource = purchases;
+            Table.ItemsSource = purchases.ToList();
 
             AddWindow.OnProductRequest += OnProductRequest;
             AddWindow.OnAddButtonClick += OnAddButtonClick;

@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="ContextProvider\DbContextProvider.cs" />
     <Compile Include="ContextProvider\IDbContextProvider.cs" />
+    <Compile Include="Models\AnalysisGroupingResult.cs" />
     <Compile Include="Models\AnalysisResult.cs" />
     <Compile Include="Models\Date.cs">
       <DependentUpon>PurchasesModel.tt</DependentUpon>

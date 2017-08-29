@@ -35,8 +35,13 @@ namespace PurchasesAnalysis
 
             InitializeComponent();
             //Test code!!!!!!
-            var purchases = _purchasesRepository.GetAll();//_analysisService.Analyse(new List<Expression<Func<Purchase, bool>>> { p => p.Type1.Name == "Продукти" });
+            Expression<Func<Purchase, AnalysisResult<DateTime, decimal>>> select = p => new AnalysisResult<DateTime, decimal> {Key = p.Date1.Date1, Value = p.Price};
 
+            var purchases = _analysisService.Analyse(
+                new List<Expression<Func<Purchase, bool>>> { p => p.Type1.Name == "Продукти" },
+                select);
+
+            
             Table.ItemsSource = purchases.ToList();
 
             AddWindow.OnProductRequest += OnProductRequest;

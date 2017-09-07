@@ -16,26 +16,24 @@ namespace PurchasesAnalysis.Core.Services
             _contextProvider = contextProvider;
         }
 
-        public IList<AnalysisResult<TKey, TValue>> Analyse<TKey, TValue>(//TGroupKey
+        public IList<AnalysisResult<TKey, TValue>> Analyse<TKey, TValue>(
             IList<Expression<Func<Purchase, bool>>> filters, 
-            //Expression<Func<Purchase, TGroupKey>> groupClause,
-            //Expression<Func<IQueryable<AnalysisResult<TKey, TValue>>, Func<TValue, TValue>, AnalysisResult<TKey, TValue>>> aggregateFunction, 
-            Expression<Func<Purchase, AnalysisResult<TKey, TValue>>> select)
+            Expression<Func<Purchase, AnalysisResult<TKey, TValue>>> select,
+            Func<IGrouping<TKey, AnalysisResult<TKey, TValue>>, AnalysisResult<TKey, TValue>> aggregateFunction
+            )
         {
             using (var context = _contextProvider.GetContext())
             {
-                //IList<AnalysisResult<TKey, TValue>> result;
                 var items = context.Purchases.AsQueryable();
-                filters.Aggregate(items, AddFilter);
+                foreach (var f in filters)
+                {
+                    items = AddFilter(items, f);
+                }
 
-                //if (groupClause != null)
-                //{
-                //    result = AddGrouping(items, groupClause)
-                //        .Select(i => i.AsQueryable().Select(select).Select(r => new AnalysisGroupingResult<TKey, TValue, TGroupKey>(r, i.Key))).ToList();
-                //    return result;
-                //}
 
-                var result = items.Select(select);
+                IList<AnalysisResult<TKey, TValue>> result = items.Select(select).ToList();
+                result = AddAggregation(result, aggregateFunction);
+
                 return result.ToList();
             }
         }
@@ -43,6 +41,14 @@ namespace PurchasesAnalysis.Core.Services
         public IQueryable<Purchase> AddFilter(IQueryable<Purchase> items, Expression<Func<Purchase, bool>> filter)
         {
             return items.Where(filter);
+        }
+
+        public IList<AnalysisResult<TKey, TValue>> AddAggregation<TKey, TValue>(IList<AnalysisResult<TKey, TValue>> items, Func<IGrouping<TKey, AnalysisResult<TKey, TValue>>, AnalysisResult<TKey, TValue>> aggregateFunction)
+        {
+            return items
+                .GroupBy(i => i.Key)
+                .Select(aggregateFunction)
+                .ToList();
         }
 
         public IQueryable<IGrouping<TGroupKey, Purchase>> AddGrouping<TGroupKey>(IQueryable<Purchase> items, Expression<Func<Purchase, TGroupKey>> groupClause)

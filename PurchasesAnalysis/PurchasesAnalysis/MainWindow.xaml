@@ -10,10 +10,17 @@
         <DataGrid x:Name="Table" Margin="149,10,10,42">
         </DataGrid>
         <appControls:AddWindow x:Name="AddWindow" Visibility="Hidden" Margin="107,10,106,11"></appControls:AddWindow>
-        <Button x:Name="Button" Content="Add" HorizontalAlignment="Left" Margin="149,288,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <Button x:Name="Button" Content="Add" HorizontalAlignment="Left" Margin="149,288,0,0" VerticalAlignment="Top" Width="352" Click="Button_Click"/>
         <Label Content="Filter: " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <ComboBox x:Name="FilterSelect" HorizontalAlignment="Left" Margin="17,36,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding Path=FilterItems}" SelectedItem="{Binding Path=SelectedFilter}"/>
-        <ListBox x:Name="ValueSelect" HorizontalAlignment="Left" Height="100" Margin="17,71,0,0" VerticalAlignment="Top" Width="120" SelectionMode="Multiple"/>
+        <ListBox x:Name="ValueSelect" HorizontalAlignment="Left" Height="48" Margin="17,71,0,0" VerticalAlignment="Top" Width="120" SelectionMode="Multiple"/>
         <Button x:Name="ApplyButton" Content="Apply" HorizontalAlignment="Left" Margin="17,288,0,0" VerticalAlignment="Top" Width="120" Click="ApplyButton_Click"/>
+        <Label Content="Aggregation:" HorizontalAlignment="Left" Margin="17,124,0,0" VerticalAlignment="Top" Width="85"/>
+        <ComboBox x:Name="AggregationSelect" HorizontalAlignment="Left" Margin="17,155,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Grid parameters:" HorizontalAlignment="Left" Margin="17,182,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Dimention" HorizontalAlignment="Left" Margin="17,208,0,0" VerticalAlignment="Top" Width="51" Height="22" FontSize="8"/>
+        <Label Content="Fact" HorizontalAlignment="Left" Margin="17,239,0,0" VerticalAlignment="Top" Width="51" FontSize="8"/>
+        <ComboBox x:Name="XAxisSelect" HorizontalAlignment="Left" Margin="73,208,0,0" VerticalAlignment="Top" Width="62" ItemsSource="{Binding Path=DimentionItems}" SelectedItem="{Binding Path=SelectedDimention}"/>
+        <ComboBox x:Name="YAxisSelect" HorizontalAlignment="Left" Margin="73,239,0,0" VerticalAlignment="Top" Width="62" ItemsSource="{Binding Path=FactItems}" SelectedItem="{Binding Path=SelectedFact}"/>
     </Grid>
 </Window>

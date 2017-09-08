@@ -10,6 +10,8 @@ using DBConnector.RequestExecuter;
 using PurchasesAnalysis.Core.Models;
 using PurchasesAnalysis.Core.Repositories;
 using PurchasesAnalysis.Core.Services;
+using Expression = System.Linq.Expressions.Expression;
+using Type = System.Type;
 
 namespace PurchasesAnalysis
 {
@@ -21,10 +23,11 @@ namespace PurchasesAnalysis
         private readonly IPurchasesRepository _purchasesRepository;
         private readonly IRequestExecuter _requestExecuter;
         private readonly IAnalysisService _analysisService;
+
+        #region Filter properties
         private string _selectedFilter;
 
-
-        public IList<string> FilterItems => Constants.Filters.All;
+        public IList<string> FilterItems => Constants.Dimentions.All;
 
         public string SelectedFilter
         {
@@ -36,25 +39,95 @@ namespace PurchasesAnalysis
             } 
         }
 
-        public Expression<Func<Purchase, bool>> SelectedFilterExpression
+        public List<Expression<Func<Purchase, bool>>> SelectedFilterExpressions
         {
             get
             {
-                if (SelectedFilter == Constants.Filters.Product)
+                if (SelectedFilter == Constants.Dimentions.Product)
                 {
                     var filterTypes = ValueSelect.SelectedItems.OfType<string>();
-                    return p => filterTypes.Contains(p.Product1.Name);
+                    return new List<Expression<Func<Purchase, bool>>> { p => filterTypes.Contains(p.Product1.Name) };
                 }
 
-                if (SelectedFilter == Constants.Filters.Type)
+                if (SelectedFilter == Constants.Dimentions.Type)
                 {
                     var filterTypes = ValueSelect.SelectedItems.OfType<string>();
-                    return p => filterTypes.Contains(p.Type1.Name);
+                    return new List<Expression<Func<Purchase, bool>>> { p => filterTypes.Contains(p.Type1.Name) };
                 }
 
-                throw new InvalidOperationException("Unexpected filter type");
+                return new List<Expression<Func<Purchase, bool>>>();
             }
         }
+        #endregion
+
+        #region Aggregation properties
+        private string _selectedAggregation;
+
+        public IList<string> AggregationItems => Constants.Aggregation.All;
+
+        public string SelectedAggregation
+        {
+            get { return _selectedAggregation; }
+            set
+            {
+                OnAggregationChanged(value);
+                _selectedAggregation = value;
+            }
+        }
+        #endregion
+
+        #region Select properties
+        private string _selectedFact;
+        private string _selectedDimention;
+
+        public IList<string> FactItems => Constants.Facts.All;
+        public IList<string> DimentionItems => Constants.Dimentions.All;
+
+        public string SelectedFact
+        {
+            get { return _selectedFact; }
+            set
+            {
+                //OnAggregationChanged(value);
+                _selectedFact = value;
+            }
+        }
+
+        public string SelectedDimention
+        {
+            get { return _selectedDimention; }
+            set
+            {
+                //OnAggregationChanged(value);
+                _selectedDimention = value;
+            }
+        }
+
+        public Type DimentionType
+        {
+            get
+            {
+                if (SelectedDimention == Constants.Dimentions.Product)
+                    return typeof (Product);
+                if (SelectedDimention == Constants.Dimentions.Type)
+                    return typeof(Core.Models.Type);
+
+                return typeof(Date);
+            }
+        }
+
+        public Type FactType
+        {
+            get
+            {
+                if (SelectedDimention == Constants.Facts.Price)
+                    return typeof(decimal);
+
+                return typeof(int);
+            }
+        }
+
+        #endregion
 
         public Test[] Test { get; set; }
 
@@ -112,14 +185,14 @@ namespace PurchasesAnalysis
         private void OnFilterChanged(string newValue)
         {
             //Test code!!!!!!
-            if (newValue == Constants.Filters.Product)
+            if (newValue == Constants.Dimentions.Product)
             {
                 var table = _requestExecuter.ExecuteSelect("select distinct name from [dbo].[product]");
                 var products = table.Rows.OfType<DataRow>().Select(r => (string) r.ItemArray[0]).ToArray();
                 ValueSelect.ItemsSource = products;
             }
 
-            if (newValue == Constants.Filters.Type)
+            if (newValue == Constants.Dimentions.Type)
             {
                 var table = _requestExecuter.ExecuteSelect("select distinct name from [dbo].[type]");
                 var types = table.Rows.OfType<DataRow>().Select(r => (string)r.ItemArray[0]).ToArray();
@@ -128,15 +201,84 @@ namespace PurchasesAnalysis
             //Test code!!!!!!
         }
 
+        private void OnAggregationChanged(string newValue)
+        {
+            
+        }
+
         private void ApplyButton_Click(object sender, RoutedEventArgs e)
         {
-            Expression<Func<Purchase, AnalysisResult<DateTime, decimal>>> select = p => new AnalysisResult<DateTime, decimal> { Key = p.Date1.Date1, Value = p.Price };
+            switch (SelectedDimention)
+            {
+                case Constants.Dimentions.Product:
+                {
+                    if (SelectedFact == Constants.Facts.Price)
+                    {
+                        var purchases = _analysisService.Analyse(
+                            SelectedFilterExpressions,
+                            p => new AnalysisResult<string, decimal> {Key = p.Product1.Name, Value = p.Price},
+                            i => new AnalysisResult<string, decimal> {Key = i.Key, Value = i.Sum(p => p.Value)});
 
-            var purchases = _analysisService.Analyse(new List<Expression<Func<Purchase, bool>>> { SelectedFilterExpression }, select,
-                i => new AnalysisResult<DateTime, decimal> { Key = i.Key, Value = i.Sum(p => p.Value) });
+                        Table.ItemsSource = purchases.ToList();
+                    }
+                    else
+                    {
+                        var purchases = _analysisService.Analyse(
+                            SelectedFilterExpressions,
+                            p => new AnalysisResult<string, int> {Key = p.Product1.Name, Value = p.Quantity},
+                            i => new AnalysisResult<string, int> {Key = i.Key, Value = i.Sum(p => p.Value)});
 
+                        Table.ItemsSource = purchases.ToList();
+                    }
+                }
+                    break;
+                case Constants.Dimentions.Type:
+                {
+                    if (SelectedFact == Constants.Facts.Price)
+                    {
+                        var purchases = _analysisService.Analyse(
+                            SelectedFilterExpressions,
+                            p => new AnalysisResult<string, decimal> {Key = p.Type1.Name, Value = p.Price},
+                            i => new AnalysisResult<string, decimal> {Key = i.Key, Value = i.Sum(p => p.Value)});
 
-            Table.ItemsSource = purchases.ToList();
+                        Table.ItemsSource = purchases.ToList();
+                    }
+                    else
+                    {
+                        var purchases = _analysisService.Analyse(
+                            SelectedFilterExpressions,
+                            p => new AnalysisResult<string, int> {Key = p.Type1.Name, Value = p.Quantity},
+                            i => new AnalysisResult<string, int> {Key = i.Key, Value = i.Sum(p => p.Value)});
+
+                        Table.ItemsSource = purchases.ToList();
+                    }
+                    break;
+                }
+                case Constants.Dimentions.Date:
+                {
+                    if (SelectedFact == Constants.Facts.Price)
+                    {
+                        var purchases = _analysisService.Analyse(
+                            SelectedFilterExpressions,
+                            p => new AnalysisResult<DateTime, decimal> {Key = p.Date1.Date1, Value = p.Price},
+                            i => new AnalysisResult<DateTime, decimal> {Key = i.Key, Value = i.Sum(p => p.Value)});
+
+                        Table.ItemsSource = purchases.ToList();
+                    }
+                    else
+                    {
+                        var purchases = _analysisService.Analyse(
+                            SelectedFilterExpressions,
+                            p => new AnalysisResult<DateTime, int> {Key = p.Date1.Date1, Value = p.Quantity},
+                            i => new AnalysisResult<DateTime, int> {Key = i.Key, Value = i.Sum(p => p.Value)});
+
+                        Table.ItemsSource = purchases.ToList();
+                    }
+                    break;
+                }
+                default:
+                    throw new InvalidOperationException();
+            }
         }
     }
 }

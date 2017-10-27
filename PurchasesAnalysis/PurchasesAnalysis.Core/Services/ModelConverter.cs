@@ -27,9 +27,9 @@ namespace PurchasesAnalysis.Core.Services
             return new PurchaseItem
             {
                 Id = purchase.ID,
-                Product = purchase.Product1.ToDto(),
-                Type = purchase.Type1.ToDto(),
-                Date = purchase.Date1.Date1,
+                Product = purchase.Product.ToDto(),
+                Type = purchase.Type.ToDto(),
+                Date = purchase.Date.Date1,
                 Price = purchase.Price,
                 Quantity = purchase.Quantity
             };

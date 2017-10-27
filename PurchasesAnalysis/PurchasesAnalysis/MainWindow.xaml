@@ -16,7 +16,7 @@
         <ListBox x:Name="ValueSelect" HorizontalAlignment="Left" Height="48" Margin="17,71,0,0" VerticalAlignment="Top" Width="120" SelectionMode="Multiple"/>
         <Button x:Name="ApplyButton" Content="Apply" HorizontalAlignment="Left" Margin="17,288,0,0" VerticalAlignment="Top" Width="120" Click="ApplyButton_Click"/>
         <Label Content="Aggregation:" HorizontalAlignment="Left" Margin="17,124,0,0" VerticalAlignment="Top" Width="85"/>
-        <ComboBox x:Name="AggregationSelect" HorizontalAlignment="Left" Margin="17,155,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="AggregationSelect" HorizontalAlignment="Left" Margin="17,155,0,0" VerticalAlignment="Top" Width="120" ItemsSource="{Binding Path=AggregationItems}" SelectedItem="{Binding Path=SelectedAggregation}"/>
         <Label Content="Grid parameters:" HorizontalAlignment="Left" Margin="17,182,0,0" VerticalAlignment="Top" Width="120"/>
         <Label Content="Dimention" HorizontalAlignment="Left" Margin="17,208,0,0" VerticalAlignment="Top" Width="51" Height="22" FontSize="8"/>
         <Label Content="Fact" HorizontalAlignment="Left" Margin="17,239,0,0" VerticalAlignment="Top" Width="51" FontSize="8"/>

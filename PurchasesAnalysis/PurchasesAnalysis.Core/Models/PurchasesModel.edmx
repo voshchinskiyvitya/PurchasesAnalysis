@@ -28,9 +28,9 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Type" Type="int" Nullable="false" />
-          <Property Name="Product" Type="int" Nullable="false" />
-          <Property Name="Date" Type="int" Nullable="false" />
+          <Property Name="TypeId" Type="int" Nullable="false" />
+          <Property Name="ProductId" Type="int" Nullable="false" />
+          <Property Name="DateId" Type="int" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="7" Scale="2" Nullable="false" />
           <Property Name="Quantity" Type="int" Nullable="false" />
         </EntityType>
@@ -49,7 +49,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Purchases">
-              <PropertyRef Name="Date" />
+              <PropertyRef Name="DateId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -61,7 +61,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Purchases">
-              <PropertyRef Name="Product" />
+              <PropertyRef Name="ProductId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -73,7 +73,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Purchases">
-              <PropertyRef Name="Type" />
+              <PropertyRef Name="TypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -132,14 +132,14 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
-          <Property Name="Product" Type="Int32" Nullable="false" />
-          <Property Name="Date" Type="Int32" Nullable="false" />
+          <Property Name="TypeId" Type="Int32" Nullable="false" />
+          <Property Name="ProductId" Type="Int32" Nullable="false" />
+          <Property Name="DateId" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Date1" Relationship="Self.Purchases_FK_Date" FromRole="Purchases" ToRole="Dates" />
-          <NavigationProperty Name="Product1" Relationship="Self.Purchases_FK_Product" FromRole="Purchases" ToRole="Product" />
-          <NavigationProperty Name="Type1" Relationship="Self.Purchases_FK_Type" FromRole="Purchases" ToRole="Type" />
+          <NavigationProperty Name="Date" Relationship="Self.Purchases_FK_Date" FromRole="Purchases" ToRole="Dates" />
+          <NavigationProperty Name="Product" Relationship="Self.Purchases_FK_Product" FromRole="Purchases" ToRole="Product" />
+          <NavigationProperty Name="Type" Relationship="Self.Purchases_FK_Type" FromRole="Purchases" ToRole="Type" />
         </EntityType>
         <EntityType Name="Type">
           <Key>
@@ -157,7 +157,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Purchases">
-              <PropertyRef Name="Date" />
+              <PropertyRef Name="DateId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -169,7 +169,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Purchases">
-              <PropertyRef Name="Product" />
+              <PropertyRef Name="ProductId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -181,7 +181,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="Purchases">
-              <PropertyRef Name="Type" />
+              <PropertyRef Name="TypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -240,9 +240,9 @@
             <EntityTypeMapping TypeName="PurchasesModel.Purchase">
               <MappingFragment StoreEntitySet="Purchases">
                 <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="Product" ColumnName="Product" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="TypeId" ColumnName="TypeId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="DateId" ColumnName="DateId" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
               </MappingFragment>

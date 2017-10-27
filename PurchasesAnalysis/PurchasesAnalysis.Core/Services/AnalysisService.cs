@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Linq.Dynamic;
+using System.Reflection;
 using PurchasesAnalysis.Core.ContextProvider;
+using PurchasesAnalysis.Core.Extentions;
 using PurchasesAnalysis.Core.Models;
+using Type = System.Type;
 
 namespace PurchasesAnalysis.Core.Services
 {
@@ -16,10 +20,9 @@ namespace PurchasesAnalysis.Core.Services
             _contextProvider = contextProvider;
         }
 
-        public IList<AnalysisResult<TKey, TValue>> Analyse<TKey, TValue>(
-            IList<Expression<Func<Purchase, bool>>> filters, 
-            Expression<Func<Purchase, AnalysisResult<TKey, TValue>>> select,
-            Func<IGrouping<TKey, AnalysisResult<TKey, TValue>>, AnalysisResult<TKey, TValue>> aggregateFunction
+        public IList<AnalysisResult> Analyse(
+            IList<Expression<Func<Purchase, bool>>> filters,
+            Constants.Dimentions argument, Constants.Facts value, Constants.Aggregation aggregation
             )
         {
             using (var context = _contextProvider.GetContext())
@@ -30,30 +33,30 @@ namespace PurchasesAnalysis.Core.Services
                     items = AddFilter(items, f);
                 }
 
+                var argProperty = argument == Constants.Dimentions.Date ? "Date1" : "Name";
 
-                IList<AnalysisResult<TKey, TValue>> result = items.Select(select).ToList();
-                result = AddAggregation(result, aggregateFunction);
+                var result = items.Select($"new(it.{argument.GetDescription()}.{argProperty}, it as Purchase)");
+                result = result.GroupBy(argProperty, "Purchase");
+                result = result.Select($"new(Key, {aggregation.GetDescription()}({value.GetDescription()}) as Value)");
 
-                return result.ToList();
+                var list = new List<AnalysisResult>();
+                foreach (var item in result)
+                {
+                    var dyn = (dynamic) item;
+                    list.Add(new AnalysisResult
+                    {
+                        Key = dyn.Key,
+                        Value = dyn.Value
+                    });
+                }
+
+                return list;
             }
-        }
+        } 
 
-        public IQueryable<Purchase> AddFilter(IQueryable<Purchase> items, Expression<Func<Purchase, bool>> filter)
+        private IQueryable<Purchase> AddFilter(IQueryable<Purchase> items, Expression<Func<Purchase, bool>> filter)
         {
             return items.Where(filter);
-        }
-
-        public IList<AnalysisResult<TKey, TValue>> AddAggregation<TKey, TValue>(IList<AnalysisResult<TKey, TValue>> items, Func<IGrouping<TKey, AnalysisResult<TKey, TValue>>, AnalysisResult<TKey, TValue>> aggregateFunction)
-        {
-            return items
-                .GroupBy(i => i.Key)
-                .Select(aggregateFunction)
-                .ToList();
-        }
-
-        public IQueryable<IGrouping<TGroupKey, Purchase>> AddGrouping<TGroupKey>(IQueryable<Purchase> items, Expression<Func<Purchase, TGroupKey>> groupClause)
-        {
-            return items.GroupBy(groupClause);
         }
     }
 }

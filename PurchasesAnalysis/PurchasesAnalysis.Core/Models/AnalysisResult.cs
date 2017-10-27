@@ -1,9 +1,9 @@
 ﻿namespace PurchasesAnalysis.Core.Models
 {
-    public class AnalysisResult<TKey, TValue>
+    public class AnalysisResult
     {
-        public TKey Key { get; set; }
+        public object Key { get; set; }
 
-        public TValue Value { get; set; }
+        public object Value { get; set; }
     }
 }

@@ -1,34 +1,60 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using PurchasesAnalysis.Core.Extentions;
 
 namespace PurchasesAnalysis.Core.Models
 {
     public class Constants
     {
-        public class Dimentions
+        public enum Dimentions
         {
-            public const string Type = "Type";
-            public const string Product = "Product";
-            public const string Date = "Date";
-
-            public static readonly IList<string> All = new List<string> { Product, Type, Date };
+            [Description("Type")]
+            Type,
+            [Description("Product")]
+            Product,
+            [Description("Date")]
+            Date
         }
 
-        public class Facts
+        public static readonly IList<string> AllDimentions = new List<string>
         {
-            public const string Price = "Price";
-            public const string Quantity = "Quantity";
+            Dimentions.Type.GetDescription(),
+            Dimentions.Product.GetDescription(),
+            Dimentions.Date.GetDescription()
+        };
 
-            public static readonly IList<string> All = new List<string> { Price, Quantity };
+        public enum Facts
+        {
+            [Description("Price")]
+            Price,
+            [Description("Quantity")]
+            Quantity
         }
 
-        public class Aggregation
+        public static readonly IList<string> AllFacts = new List<string>
         {
-            public const string Sum = "Sum";
-            public const string Average = "Average";
-            public const string Max = "Max";
-            public const string Min = "Min";
+            Facts.Price.GetDescription(),
+            Facts.Quantity.GetDescription()
+        };
 
-            public static readonly IList<string> All = new List<string> { Sum, Average, Max, Min};
+        public enum Aggregation
+        {
+            [Description("Sum")]
+            Sum,
+            [Description("Average")]
+            Average,
+            [Description("Max")]
+            Max,
+            [Description("Min")]
+            Min
         }
+
+        public static readonly IList<string> AllAggregation = new List<string>
+        {
+            Aggregation.Sum.GetDescription(),
+            Aggregation.Average.GetDescription(),
+            Aggregation.Max.GetDescription(),
+            Aggregation.Min.GetDescription()
+        };
     }
 }

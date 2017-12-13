@@ -63,7 +63,7 @@ BEGIN
 		END
 
 		INSERT INTO [dbo].[Purchases]
-		([Type], [Product], [Date], [Price], [Quantity])
+		([TypeId], [ProductId], [DateId], [Price], [Quantity])
 		VALUES
 		(@TypeID, @ProductID, @DateID, @price, @quantity)
 

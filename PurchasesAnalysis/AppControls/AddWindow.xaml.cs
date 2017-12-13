@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using AppControls.EventHandlerArgs;
@@ -21,6 +22,13 @@ namespace AppControls
         private volatile bool _isQuantityError;
         private volatile bool _isPriceError;
 
+        private readonly Window window = new Window
+        {
+            Title = "Add new purchase",
+            SizeToContent = SizeToContent.WidthAndHeight,
+            ResizeMode = ResizeMode.NoResize
+        };
+
         /// <summary>
         /// Will be invoked when user try to select product in autocomplete.
         /// </summary>
@@ -38,6 +46,8 @@ namespace AppControls
             // Today should be dafault date for datepicker.
             Date.SelectedDate = DateTime.Now.Date;
 
+            window.Content = this;
+
             ProductAutocomplete.OnTextChanged += OnAutocompleteChange;
         }
 
@@ -45,8 +55,8 @@ namespace AppControls
         /// Opens Add window.
         /// </summary>
         public void Open()
-        {
-            Visibility = System.Windows.Visibility.Visible;
+        {            
+            window.ShowDialog();
         }
 
         /// <summary>
@@ -54,7 +64,7 @@ namespace AppControls
         /// </summary>
         public void Close()
         {
-            Visibility = System.Windows.Visibility.Hidden;
+            window.Hide();
         }
 
         private void AddButton_Click(object sender, System.Windows.RoutedEventArgs e)

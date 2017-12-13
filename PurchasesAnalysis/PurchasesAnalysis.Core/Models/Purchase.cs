@@ -15,14 +15,14 @@ namespace PurchasesAnalysis.Core.Models
     public partial class Purchase
     {
         public int ID { get; set; }
-        public int Type { get; set; }
-        public int Product { get; set; }
-        public int Date { get; set; }
+        public int TypeId { get; set; }
+        public int ProductId { get; set; }
+        public int DateId { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }
     
-        public virtual Date Date1 { get; set; }
-        public virtual Product Product1 { get; set; }
-        public virtual Type Type1 { get; set; }
+        public virtual Date Date { get; set; }
+        public virtual Product Product { get; set; }
+        public virtual Type Type { get; set; }
     }
 }

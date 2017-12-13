@@ -23,7 +23,9 @@ namespace PurchasesAnalysis
     {
         private readonly IPurchasesRepository _purchasesRepository;
         private readonly IRequestExecuter _requestExecuter;
-        private readonly AnalysisService _analysisService;
+        private readonly IAnalysisService _analysisService;
+
+        private readonly AddWindow addWindow;
 
         #region Filter properties
         private string _selectedFilter;
@@ -62,7 +64,7 @@ namespace PurchasesAnalysis
         #endregion
 
         #region Aggregation properties
-        private string _selectedAggregation;
+        private string _selectedAggregation = Constants.Aggregation.Sum.GetDescription();
 
         public IList<string> AggregationItems => Constants.AllAggregation;
 
@@ -71,15 +73,15 @@ namespace PurchasesAnalysis
             get { return _selectedAggregation; }
             set
             {
-                OnAggregationChanged(value);
+                //OnAggregationChanged(value);
                 _selectedAggregation = value;
             }
         }
         #endregion
 
         #region Select properties
-        private string _selectedFact;
-        private string _selectedDimention;
+        private string _selectedFact = Constants.Facts.Price.GetDescription();
+        private string _selectedDimention = Constants.Dimentions.Date.GetDescription();
 
         public IList<string> FactItems => Constants.AllFacts;
         public IList<string> DimentionItems => Constants.AllDimentions;
@@ -130,40 +132,28 @@ namespace PurchasesAnalysis
 
         #endregion
 
-        public Test[] Test { get; set; }
-
         public MainWindow(
             IPurchasesRepository purchasesRepository, 
-            IRequestExecuter requestExecuter, 
-            AnalysisService analysisService)
+            IRequestExecuter requestExecuter,
+            IAnalysisService analysisService)
         {
             _purchasesRepository = purchasesRepository;
             _requestExecuter = requestExecuter;
             _analysisService = analysisService;
 
             InitializeComponent();
-            //Test code!!!!!!
-            
 
-            var purchases = _analysisService.Analyse(
-                new List<Expression<Func<Purchase, bool>>> { p => p.Type.Name == "Продукти" }, 
-                SelectedDimention.GetValueByDescription<Constants.Dimentions>(), 
-                SelectedFact.GetValueByDescription<Constants.Facts>(), 
-                SelectedAggregation.GetValueByDescription<Constants.Aggregation>()
-                );
+            ApplyButton_Click(null, null);
 
-            
-            Table.ItemsSource = purchases.ToList();
+            addWindow = new AddWindow();
 
-            AddWindow.OnProductRequest += OnProductRequest;
-            AddWindow.OnAddButtonClick += OnAddButtonClick;
-
-            //Test code!!!!!!
+            addWindow.OnProductRequest += OnProductRequest;
+            addWindow.OnAddButtonClick += OnAddButtonClick;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            AddWindow.Open();
+            addWindow.Open();
         }
 
         private void OnProductRequest(object sender, AutoCompleteTextChangedArgs e)
@@ -204,14 +194,8 @@ namespace PurchasesAnalysis
             //Test code!!!!!!
         }
 
-        private void OnAggregationChanged(string newValue)
-        {
-            
-        }
-
         private void ApplyButton_Click(object sender, RoutedEventArgs e)
         {
-
             var purchases = _analysisService.Analyse(
                 SelectedFilterExpressions,
                 SelectedDimention.GetValueByDescription<Constants.Dimentions>(),
@@ -219,9 +203,12 @@ namespace PurchasesAnalysis
                 SelectedAggregation.GetValueByDescription<Constants.Aggregation>()
                 );
 
-
             Table.ItemsSource = purchases.ToList();
-
+            if (Table.Columns.Any())
+            {
+                Table.Columns.FirstOrDefault().Header = SelectedDimention;
+                Table.Columns.LastOrDefault().Header = SelectedFact;
+            }
         }
     }
 }
